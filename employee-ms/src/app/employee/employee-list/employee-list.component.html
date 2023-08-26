@@ -1,0 +1,129 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mb-4"> 
+  <h5 class="me-5 mt-2">Employees</h5>
+   <div class="d-flex">
+    <div class="row g-3">
+      <div class="col-auto input-container">
+        <form class="d-flex" [formGroup]="searchForm" (ngSubmit)="searchName()">
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Search ..."
+            formControlName="name"
+            (input)="onInputChange()"
+          />
+          <span class="cross-button" [ngClass]="{'show-cross':isInputNotEmpty()}" (click)="clearSearch()"><a routerLink="[/employee-list]" class="text-decoration-none">X</a></span>
+          &nbsp;
+          <button type="submit" class="btn me-1"><i class="fa-solid fa-magnifying-glass"></i></button>           
+        </form>
+      </div>
+    </div>
+    &nbsp;
+    <a routerLink="/add-employee" class="btn me-2"><i class="fa-solid fa-plus"></i></a>
+   
+    <button class="btn me-2" (click)="exportToExcel()"><i class="fa-solid fa-file-export"></i></button>
+    
+    <a class="btn" (click)="importModal(importEmployee)"><i class="fa-solid fa-file-import"></i></a>
+
+   </div>
+  </div>
+ 
+  <table class="table table-hover">
+    <thead class="text-center">
+      <tr>
+        <th scope="col">No </th>
+        <th scope="col">ID <i class="fa-solid fa-sort" (click)="sortEmployeeId()"></i></th>
+        <th scope="col">Name <i class="fa-solid fa-sort" (click)="sortName()"></i></th>
+        <th scope="col">Position <i class="fa-solid fa-sort" (click)="sortPosition()"></i></th>
+        <th scope="col">Department <i class="fa-solid fa-sort" (click)="sortDepartment()"></i></th>
+        <th scope="col">NRC <i class="fa-solid fa-sort" (click)="sortNrc()"></i></th>
+        <th scope="col">License <i class="fa-solid fa-sort" (click)="sortLicense()"></i></th>
+        <th scope="col">Tax No <i class="fa-solid fa-sort" (click)="sortTaxNo()"></i></th>      
+        <th scope="col">Image <i class="fa-solid fa-sort" (click)="sortImage()"></i></th>  
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="employees.length == 0 && isLoading">
+      <tr>
+          <td colspan="10" class="text-center"><i class="fas fa-spinner fa-spin"></i>
+          </td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="employees.length == 0 && !isLoading">          
+        <tr>
+          <td colspan="10" class="text-center"><p class="mt-2 text-danger fw-bold">Employee List Empty !</p></td>
+        </tr>
+    </tbody>
+    <tbody class="text-center">
+      <tr *ngFor="let e of employees | paginate: { itemsPerPage: count, currentPage: p }; let i = index" >
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ e.employeeId }}</td>
+        <td>{{ e.name }}</td>
+        <td>{{ e.position }}</td>
+        <td>{{ e.department }}</td>       
+        <td>{{ e.nrc }}</td>       
+        <td>{{ e.license }}</td>
+        <td>{{ e.taxNo }}</td>
+        <td>
+          <img [src]="e.image || defaultProfile" alt="Profile Image" />
+        </td>
+        <td class="d-flex">
+          <div class="p-2">
+            <a [routerLink]="['/employee-detail',e.id]" class="btn"><i class="fa-regular fa-eye"></i></a>
+            &nbsp;
+            <a [routerLink]="['/edit-employee',e.id]" class="btn"><i class="fa-regular fa-pen-to-square"></i></a>
+            &nbsp;
+            <button type="button" class="btn" (click)="onDelete(close,e.id)"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>        
+    </tbody> 
+
+  </table>
+
+  <div class="float-end mt-2">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+  
+</div>
+
+
+<!-- Delete Employee Modal -->
+<ng-template #close let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">Delete Employee</h5>
+    <a type="button" class="close" aria-label="Close"  (click)="d('Cross click')">
+      <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>        
+    </a>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-large"  (click)="d('Cross click')" >Close</button>
+    <button type="button" class="btn btn-large" (click)="c('yes')">Delete</button>
+  </div>
+</ng-template> 
+
+<!-- Import Employee Modal-->
+<ng-template #importEmployee let-modal>
+  <div class="modal-header">
+    <h5>Choose File For Import</h5>
+    <a class="close" aria-label="Close"  (click)="modal.dismiss()">
+      <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>        
+    </a>
+  </div>
+  <div class="modal-body p-4">
+    <form> 
+      <input type="file" (change)="onFileSelected($event)" class="form-control" name="imageFile" #imageFileInput />
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-large" (click)="modal.dismiss()">Close</button>
+    <button type="submit" class="btn btn-large" (click)="onSubmit()">Save</button>
+  </div>
+</ng-template>
+
+

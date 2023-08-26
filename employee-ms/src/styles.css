@@ -1,0 +1,54 @@
+@import 'ngx-toastr/toastr';
+
+:root{
+    --primary-color:#46466e;
+    --secondary-color:#8787a3;
+    --third-color:#bdbdd7;
+    --light-color:#fff;
+    --dark-color:#000;
+    --table-color:#f7f7f9;
+}
+
+.custom-toast {    
+    top: 100px;
+    width:600px;
+    height: 60px;
+    padding:15px;
+    color:white;
+}
+
+.btn{
+    width:40px;
+    height:40px;
+    background-color: var(--primary-color); 
+    color:var(--light-color); 
+}
+
+
+.btn:hover{
+    background-color: var(--secondary-color); 
+    color:var(--light-color); 
+}
+
+
+.btn-large{
+    width:80px;
+    height:40px;
+
+}
+
+i{
+    font-size: 14px;
+}
+h5{
+    color:var(--primary-color);
+}
+
+input[type="text"],input[type="date"],select,textarea{
+    border-color:var(--third-color);   
+    color:var(--primary-color);
+}
+
+label{
+    color:var(--primary-color);
+}

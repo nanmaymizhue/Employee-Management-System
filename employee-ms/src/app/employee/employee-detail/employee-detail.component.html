@@ -1,0 +1,39 @@
+<div class="container mt-4 mb-5 w-75">
+  <div class="card">
+    <h5 class="card-header p-3">
+      Employee Detail <span class="float-end"><a routerLink="" class="text-decoration-none"><i class="fa-solid fa-xmark"></i></a></span>
+    </h5>
+    <div class="card-body p-5">      
+        <div class="d-flex justify-content-between mb-4">
+            <div></div>
+            <img [src]="profileImageUrl" alt="Profile Image" class="float-end"/>        
+        </div>    
+          
+       <div class="d-flex" *ngIf="employee"> 
+        <div class="card p-3 col-6">
+            <div class="d-flex"><p class="col-4">Employee ID : </p><strong class="col-8">{{employee.employeeId}}</strong></div>
+            <div class="d-flex"><p class="col-4">Name : </p><strong class="col-8">{{employee.name}}</strong></div>
+            <div class="d-flex"><p class="col-4">Position : </p><strong class="col-8">{{employee.position}}</strong></div>
+            <div class="d-flex"><p class="col-4">Department : </p><strong class="col-8">{{employee.department}}</strong></div>
+            <div class="d-flex"><p class="col-4">Address : </p><strong class="col-8">{{employee.address}}</strong></div>
+            <div class="d-flex"><p class="col-4">NRC : </p><strong class="col-8">{{employee.nrc}}</strong></div>
+        </div>
+        &nbsp;     
+         <div class="card p-3 col-6">
+            <div class="d-flex"><p class="col-4">Date of Birth : </p><strong class="col-8">{{employee.dob}}</strong></div>
+            <div class="d-flex"><p class="col-4">Gender : </p><strong class="col-8">{{employee.gender}}</strong></div>
+            <div class="d-flex"><p class="col-4">Father Name : </p><strong class="col-8">{{employee.fatherName}}</strong></div>
+            <div class="d-flex"><p class="col-4">License : </p><strong class="col-8">{{employee.license}}</strong></div>
+            <div class="d-flex"><p class="col-4">Tax No : </p><strong class="col-8">{{employee.taxNo}}</strong></div>        
+            <div class="d-flex"><p class="col-4">Education : </p>       
+            <div *ngFor="let education of employee.education">
+              <strong class="col-8">{{education.type}} ({{education.name}}) , </strong>             
+            </div>  
+          </div>   
+         </div> 
+       </div>
+
+     
+    </div>
+  </div>
+</div>
